@@ -8,13 +8,39 @@ SignalR is a library to work with in .NET. You can add real-time functionality t
 
 ### Nuget Packages
 ```
-Automapper.Extensions.Microsoft.DependencyInjection
-Microsoft.AspNetCore.Authentication.JwtBearer
-Microsoft.EntityFrameworkCore.Design
-Microsoft.EntityFrameworkCore.Tools
-Npgsql.EntityFrameworkCore.PostGreSQL
-MassTransit.RabbitMQ
-MassTransit.EntityFrameworkCore
+Microsoft.AspNetCore.SignalR.Client
 ```
 
-<img src="/pictures/architecture.png" title="architecture"  width="900">
+### Connect the client to Hub
+
+- url
+```
+wss://localhost:7093/chat-hub
+```
+
+- message
+```
+{
+    "protocol : "json",
+    "version : 1
+}
+```
+<img src="/pictures/connect.png" title="connect client to hub"  width="900">
+
+### Send message to Hub
+
+- url
+```
+wss://localhost:7093/chat-hub
+```
+
+- message
+```
+{
+    "arguments" : ["a1"],
+    "invocationId" : 0,
+    "target" : "SendMessage",
+    "type" : 1
+}
+```
+<img src="/pictures/connect.png" title="connect client to hub"  width="900">
