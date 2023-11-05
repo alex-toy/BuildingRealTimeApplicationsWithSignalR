@@ -12,10 +12,10 @@ $(document).ready(() => {
     deleteCall(this);
   });
 
-  //signalR
-  const client = new signalR.HubConnectionBuilder().withUrl("/callcenter").build();
 
+  const client = new signalR.HubConnectionBuilder().withUrl("/callcenter").build();
   client.on("NewCallReceived", newCall => addCall(newCall) );
+  client.on("DeleteCallEvent", id => deleteCallById(id));
 
 
   function addCalls() {
@@ -36,7 +36,17 @@ $(document).ready(() => {
   function deleteCall(button) {
     let id = $(button).attr("data-id");
     $.ajax({
-      url: `/api/calls/${id}`, 
+      url: `/api/calls/${id}`,
+      method: "delete"
+    })
+      .then(res => {
+        $(button).closest("tr").remove();
+      });
+  }
+
+  function deleteCallById(id) {
+    $.ajax({
+      url: `/api/calls/${id}`,
       method: "delete"
     })
       .then(res => {

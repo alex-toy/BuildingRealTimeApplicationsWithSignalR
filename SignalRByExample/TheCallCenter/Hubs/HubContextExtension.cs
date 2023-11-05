@@ -16,5 +16,10 @@ namespace TheCallCenter.Hubs
     {
       await _hubContext.Clients.Group("CallCenter").NewCallReceived(call);
     }
+
+    public static async Task AlertGroupOnDeleteCallEvent(this IHubContext<CallCenterHub, ICallCenterHub> _hubContext, int id)
+    {
+      await _hubContext.Clients.Group("CallCenter").DeleteCallEvent(id);
+    }
   }
 }

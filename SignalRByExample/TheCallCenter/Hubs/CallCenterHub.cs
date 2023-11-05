@@ -11,6 +11,10 @@ namespace TheCallCenter.Hubs
       //await Clients.All.NewCallReceived(newCall);
       await Clients.Group("CallCenter").NewCallReceived(newCall);
     }
+    public async Task DeleteCallEvent(int id)
+    {
+      await Clients.Group("CallCenter").DeleteCallEvent(id);
+    }
 
     public async Task JoinCallCenters()
     {

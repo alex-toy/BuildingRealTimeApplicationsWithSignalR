@@ -6,6 +6,7 @@ namespace TheCallCenter.Hubs
   public interface ICallCenterHub
   {
     Task NewCallReceived(Call newCall);
+    Task DeleteCallEvent(int id);
     Task JoinCallCenters();
   }
 }

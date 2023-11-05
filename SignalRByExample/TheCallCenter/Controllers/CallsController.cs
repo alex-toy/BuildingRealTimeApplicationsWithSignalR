@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using TheCallCenter.Data;
+using TheCallCenter.Hubs;
 
 namespace TheCallCenter.Controllers
 {
@@ -13,17 +15,19 @@ namespace TheCallCenter.Controllers
   [Route("api/calls")]
   public class CallsController : Controller
   {
-    private readonly CallCenterContext _ctx;
+    private readonly CallCenterContext _callCenterContext;
+    private readonly IHubContext<CallCenterHub, ICallCenterHub> _hubContext;
 
-    public CallsController(CallCenterContext ctx)
+    public CallsController(CallCenterContext ctx, IHubContext<CallCenterHub, ICallCenterHub> hubContext)
     {
-      _ctx = ctx;
+      _callCenterContext = ctx;
+      _hubContext = hubContext;
     }
 
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-      var calls = await _ctx.Calls.ToListAsync();
+      var calls = await _callCenterContext.Calls.ToListAsync();
 
       return Ok(calls);
     }
@@ -33,12 +37,13 @@ namespace TheCallCenter.Controllers
     {
       try
       {
-        var call = await _ctx.Calls.Where(c => c.Id == id).FirstOrDefaultAsync();
+        var call = await _callCenterContext.Calls.Where(c => c.Id == id).FirstOrDefaultAsync();
         if (call == null) return BadRequest();
 
-        _ctx.Remove(call);
-        if (await _ctx.SaveChangesAsync() > 0)
+        _callCenterContext.Remove(call);
+        if (await _callCenterContext.SaveChangesAsync() > 0)
         {
+          await _hubContext.AlertGroupOnDeleteCallEvent(id);
           return Ok(new { success = true });
         }
         else
