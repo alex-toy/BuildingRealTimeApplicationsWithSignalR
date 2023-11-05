@@ -43,7 +43,8 @@ namespace TheCallCenter.Controllers
           ViewBag.Message = "Problem Reported...";
           ModelState.Clear();
 
-          await AlertAllClients(call);
+          //await _hubContext.AlertAllClients(call);
+          await _hubContext.AlertGroup(call);
         }
         else
         {
@@ -56,11 +57,6 @@ namespace TheCallCenter.Controllers
       }
 
       return View();
-    }
-
-    private async Task AlertAllClients(Call call)
-    {
-      await _hubContext.Clients.All.NewCallReceived(call);
     }
 
     public IActionResult Privacy()

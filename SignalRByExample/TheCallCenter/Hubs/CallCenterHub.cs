@@ -8,7 +8,13 @@ namespace TheCallCenter.Hubs
   {
     public async Task NewCallReceived(Call newCall)
     {
-      await Clients.All.NewCallReceived(newCall);
+      //await Clients.All.NewCallReceived(newCall);
+      await Clients.Group("CallCenter").NewCallReceived(newCall);
+    }
+
+    public async Task JoinCallCenters()
+    {
+      await Groups.AddToGroupAsync(Context.ConnectionId, "CallCenter");
     }
   }
 }
