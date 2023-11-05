@@ -52,12 +52,8 @@ namespace TheCallCenter
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapHub<CallCenterHub>("/callcenter");
+        endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
       });
-
-      //app.UseEndpoints(routes =>
-      //{
-      //  routes.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-      //});
     }
   }
 }
