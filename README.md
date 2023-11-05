@@ -7,6 +7,19 @@ SignalR is a library to work with in .NET. You can add real-time functionality t
 ## SignalR in ASP.NET Core Projects
 
 ### Nuget Packages
+```
+Microsoft.EntityFrameworkCore.Tools
+```
+
+### Database
+```
+Add-Migration init
+Update-Database
+```
+
+### Run App
+<img src="/pictures/call.png" title="call center"  width="900">
+
 
 
 

@@ -16,9 +16,9 @@ namespace TheCallCenter.Controllers
   public class HomeController : Controller
   {
     private readonly CallCenterContext _callCenterContext;
-    private readonly IHubContext<CallCenterHub> _hubContext;
+    private readonly IHubContext<CallCenterHub, ICallCenterHub> _hubContext;
 
-    public HomeController(CallCenterContext ctx, IHubContext<CallCenterHub> hubContext)
+    public HomeController(CallCenterContext ctx, IHubContext<CallCenterHub, ICallCenterHub> hubContext)
     {
       _callCenterContext = ctx;
       _hubContext = hubContext;
@@ -60,7 +60,7 @@ namespace TheCallCenter.Controllers
 
     private async Task AlertAllClients(Call call)
     {
-      await _hubContext.Clients.All.SendAsync("NewCallReceived", call);
+      await _hubContext.Clients.All.NewCallReceived(call);
     }
 
     public IActionResult Privacy()
