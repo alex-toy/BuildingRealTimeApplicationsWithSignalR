@@ -7,6 +7,7 @@ namespace TheCallCenter.Hubs
   {
     Task NewCallReceived(Call newCall);
     Task DeleteCallEvent(int id);
+    Task ResolveCallEvent(int id);
     Task JoinCallCenters();
   }
 }

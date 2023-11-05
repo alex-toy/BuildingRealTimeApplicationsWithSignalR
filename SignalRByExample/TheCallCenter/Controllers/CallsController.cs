@@ -56,5 +56,30 @@ namespace TheCallCenter.Controllers
         return StatusCode(500);
       }
     }
+
+    [HttpPost("resolve/{id:int}")]
+    public async Task<IActionResult> Resolve(int id)
+    {
+      try
+      {
+        var call = await _callCenterContext.Calls.Where(c => c.Id == id).FirstOrDefaultAsync();
+        if (call == null) return BadRequest();
+
+        //_callCenterContext.Resolve(call);
+        if (await _callCenterContext.SaveChangesAsync() > 0 || true)
+        {
+          await _hubContext.AlertGroupOnResolveCallEvent(id);
+          return Ok(new { success = true });
+        }
+        else
+        {
+          return BadRequest("Database Error");
+        }
+      }
+      catch
+      {
+        return StatusCode(500);
+      }
+    }
   }
 }
